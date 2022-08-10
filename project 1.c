@@ -2,11 +2,13 @@
 #include <stdlib.h> //para poder usar o system pause e cls
 #include <locale.h> //para que acentos sejam exibidos normalmente
 
+//case 1, 2, 3 e 6 prestando
+
 int main(){ //onde vai estar todo nosso programa
     setlocale(LC_ALL, "Portuguese"); //define a linguagem do programa para portugues e lê os acentos
     //cadastrar aluno(matrícula), remover aluno, Atualizar dados de um aluno, Listar alunos cadastrados,
     // Listar alunos aprovados, Listar alunos reprovados por média,Listar alunos reprovados por faltas
-    int n=0;
+    int n = 0;
     int matricula[30];
     int faltas[30];
     int notas[30][4];
@@ -53,7 +55,7 @@ int main(){ //onde vai estar todo nosso programa
             printf("Matrícula: %d\n",matricula);
 
             printf(" \t\tRemover aluno\n\n");
-            printf(" \t1Remover\n \t2Não remover\n");
+            printf(" \t1 Remover\n \t2 Não remover\n");
             scanf("%d",&remover);
             if (remover == 1){
                 memset(matricula,0,sizeof(matricula));//para preencher a memória com um determinada valor
@@ -89,6 +91,13 @@ int main(){ //onde vai estar todo nosso programa
             system("pause");
             break;
 
+    struct aluno{
+    int matricula;
+    int faltas;
+    int notas[5];
+    };
+    struct aluno alunos[30];
+
         case 4://Listagem de alunos cadastrados
             system("cls");
             for (i = 1; i <=30; i++) { //contador diferente para nao atrapalhar na contagem cadastros
@@ -107,18 +116,14 @@ int main(){ //onde vai estar todo nosso programa
 
         case 5://Listagem de alunos aprovados
             //Média igual ou superior a 7,0 E frequência acima ou igual ao 60%) - Imprimir matrículas, médias e frequências;
-            system("cls");
-            int i, medianotas, frequencia;
-             medianotas = notas/4;
-             frequencia = faltas*0.6;
-            for (i = 1; i <=30; i++) {
-                    if((i < n) && (medianotas>=7) && (faltas>=frequencia)){
+            for (int x = 1; x <= 30; x++) {
+                    if(){
                         printf("\t\tListagem de alunos aprovados\n\n");
                         printf("Matrícula: %d\n",matricula[i]);
                         printf("Faltas: %d\n",faltas[i]);
                         printf("Notas: %d\n",notas[i]);
                     } else{
-                        i = 30;
+                        x > 30;
                         printf("\tERRO\n");
                     }
                 }
@@ -127,20 +132,16 @@ int main(){ //onde vai estar todo nosso programa
 
         case 6://Listagem de alunos reprovados por média
             //Imprimir matrículas e médias
-            system("cls");
-            for (i = 1; i <=30; i++) {
-                    if(i < n && (medianotas<7)){
-                        printf("\t\tListagem de alunos reprovados por média\n\n");
-                        printf("Matrícula: %d\n",matricula[i]);
-                        printf("Notas: %d\n",notas[i]);
-                    } else{
-                        i = 30;
-                        printf("\tERRO\n");
+            printf("\t\tListagem de alunos reprovados por média\n\n");
+            for (int x = 0; x <= 30; x++) {
+                    if(alunos[x].notas[4] <= 7){
+                        printf("Matrícula: %d", matricula);
+                        printf(" \tNota: %d\n", alunos[x].notas);
                     }
                 }
                 system("pause");
                 break;
-
+                
         case 7://Listagem de alunos reprovados por faltas
             //(frequência abaixo de 60%) - Imprimir matrículas e frequências
             system("cls");
@@ -160,3 +161,4 @@ int main(){ //onde vai estar todo nosso programa
     }
     return 0;
 }
+
