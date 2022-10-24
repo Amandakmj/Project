@@ -5,13 +5,18 @@
 
 typedef struct aluno
 {
-    int matricula[30];
-    int notas[30][4];
-    int falta[30];
+    int matricula;
+    float notas[4];
+    int faltas;
     int ativo;
     int opcao;
+    int turma;
+    char nome[50];
     int media;
-}; struct aluno alunos[30];
+};
+struct aluno;
+
+struct aluno alunos[30];
 
 void menu();
 void cadastro();
@@ -24,14 +29,19 @@ void freprovados();
 
 int main(int argc, int const *argv[])
 {
-    setlocale(LC_ALL,"portuguese");
+    for (int i = 0; i < 30; i++)
+    {
+        alunos[i].matricula = -1;
+        alunos[i].ativo = 0;
+    }
+    setlocale(LC_ALL, "portuguese");
     menu();
     return 0;
 }
 
 void menu()
 {
-    system ("cls");
+    system("cls");
     int opcao;
     do
     {
@@ -47,173 +57,227 @@ void menu()
         printf("Digite a opção desejada: ");
         scanf("%d", &opcao);
 
-        switch(opcao)
+        switch (opcao)
         {
-            case 1:
-                cadastro();
+        case 1:
+            cadastro();
             break;
-            case 2:
-                remover();
+        case 2:
+            remover();
             break;
-            case 3:
-                atualizar();
+        case 3:
+            atualizar();
             break;
-            case 4:
-                cadastrados();
+        case 4:
+            cadastrados();
             break;
-            case 5:
-                aprovados();
+        case 5:
+            aprovados();
             break;
-            case 6:
-                mreprovados();
+        case 6:
+            mreprovados();
             break;
-            case 7:
-                freprovados();
+        case 7:
+            freprovados();
             break;
-            default:
-                 printf(" \n ERRO ");
+        default:
+            printf(" \n ERRO ");
             break;
         }
-    }
-    while(opcao!=0);
+    } while (opcao != 0);
 }
 
-    void cadastro()
-    {
-        system("cls");
-        int matricula[30];
-        int notas[30][4];
-        int falta[30];
-        int ativo;
-        int opcao;
-        int i;
+void cadastro()
+{
+    system("cls");
 
-        do
+    struct aluno alunoNovo;
+    int index = -1;
+
+    printf("\nMatrícula: ");
+    scanf("%d", &alunoNovo.matricula);
+
+    printf("Turma: ");
+    scanf("%d", &alunoNovo.turma);
+
+     printf("Nome: \n");
+    scanf("%s", alunoNovo.nome);
+
+    for (int i = 0; i < 30; i++)
+    {
+        printf("\ni: %d\n", i);
+        if (alunos[i].matricula == alunoNovo.matricula && alunos[i].ativo != 0)
         {
-            printf("\nMatrícula: \n\n");
-            scanf("%d", alunos[i]);
-            printf("Faltas: \n");
-            scanf("%d", falta);
-            printf(" Primeira nota:");
-            scanf("%d", notas[0]);
-            printf(" Segunda nota:");
-            scanf("%d", notas[1]);
-            printf(" Terceira nota:");
-            scanf("%d", notas[2]);
-            printf(" Quarta nota:");
-            scanf("%d", notas[3]);
-
-            printf(" \n1 - Continuar \n0 - Sair \n");
-            scanf("%d", &opcao);
-        } while (opcao != 0);
-    }
-
-    void remover()
-    {
-        system("cls");
-        int matricula;
-        int i;
-        printf("\n Digite a matricula do aluno a ser removido: ");
-        scanf("%d", &alunos[i]);
-        alunos[matricula].ativo = 0;
-        printf("\n Aluno foi excluido com sucesso\n");
-
-    }
-    void atualizar()
-    {
-        system("cls");
-        int atualizar, pesquisar;
-        int matricula[30];
-        int notas[30][4];
-        int falta[30];
-
-            printf(" \t\tAtualizar dados \n\n");
-            printf("Digite a matrícula do aluno: \n\n");
-            scanf("%d", &pesquisar);
-
-            for (int i=0;i<30;i++){
-                if(matricula[i]==pesquisar){
-                    printf(" \tMatrícula: %d", matricula);
-                }
-            }
-            printf(" \t1. Atualizar as faltas \n");
-            printf(" \t2. Atualizar as notas \n");
-            scanf(" %d",&atualizar);
-
-            if(atualizar==1){
-                printf("Atualizar as faltas: \n");
-                scanf("%d",&falta);
-            }
-            else if(atualizar==2){
-                printf("Atualizar as notas: \n");
-                scanf("%d",&notas);
-            }
-            else{
-                printf("\t\tERRO");
-            }
-            system("pause");
-    }
-
-    void cadastrados(){
-        system("cls");
-        int matricula;
-        printf("\n Lista de alunos cadastrados\n");
-        for (int i = 0; i < 30; i++)
+            printf("Matrícula já cadastrada!");
+            break;
+        }
+        else
         {
+            if (alunos[i].ativo == 0)
             {
-                printf("\nMatrícula: %d\n", alunos[i],matricula);
-                printf("Faltas: %d\n", alunos[i].falta);
-                printf("Nota 1: %d \n", alunos[i].notas[0]);
-                printf("Nota 2: %d\n", alunos[i].notas[1]);
-                printf("Nota 3: %d\n", alunos[i].notas[2]);
-                printf("Nota 4: %d\n\n", alunos[i].notas[3]);
+                index = i;
             }
         }
     }
+    if (index != -1)
+    {
+        printf("\nFaltas: ");
+        scanf("%d", &alunoNovo.faltas);
 
-    void aprovados()
-    {
-        system("cls");
-        int soma, media;
-        int notas[4];
-        soma = notas[0] + notas[1] + notas[2] + notas[3];
-        media = soma/4;
-        printf("\t\tListagem de alunos aprovados\n\n");
-            for (int i = 0; i <= 30; i++) {
-                    if(alunos[i].media >= 7 && alunos[i].falta >= 21){
-                        printf("Matrícula: %d\n", alunos[i].matricula);
-                        printf("Nota final: %d\n", alunos[i].media);
-                        printf("Faltas: %d\n\n", alunos[i].falta);
-                    }
-                }
-                system("pause");
+        for (int i = 0; i < 4; i++)
+        {
+            printf("Nota %d: ", i);
+            scanf("%f", &alunoNovo.notas[i]);
+        }
+        alunoNovo.ativo = 1;
+        alunos[index] = alunoNovo;
     }
-    void mreprovados()
-    {
-        system("cls");
-        int soma, media;
-        int notas[4];
-        soma = notas[0] + notas[1] + notas[2] + notas[3];
-        media = soma/4;
-        printf("\t\tListagem de alunos reprovados por média\n\n");
-            for (int i = 0; i <= 30; i++) {
-                    if(alunos[i].media < 7){
-                        printf("Matrícula: %d\n", alunos[i].matricula);
-                        printf("Nota final: %d\n\n", alunos[i].media);
-                    }
-                }
-                system("pause");
-    }
-    void freprovados()
-    {
-        system("cls");
-            printf("\t\tListagem de alunos reprovados por faltas\n\n");
-            for (int i = 0; i <= 30; i++) {
-                    if(alunos[i].falta > 21){
-                        printf("Matrícula: %d\n", alunos[i].matricula);
-                        printf("Faltas: %d\n\n", alunos[i].falta);
-                    }
-                }
-                system("pause");
-    }
+}
 
+void remover()
+{
+    system("cls");
+    int matricula;
+
+    printf("\n Digite a matricula do aluno a ser removido: ");
+    scanf("%d", &matricula);
+
+    for (int i = 0; i < 30; i++)
+    {
+        if (matricula == alunos[i].matricula && alunos[i].ativo != 0)
+        {
+            alunos[i].ativo = 0;
+            printf("\nAluno foi excluido com sucesso!\n");
+        }
+        else
+        {
+            printf("\nAluno nao encontrado!\n");
+        }
+    }
+}
+void atualizar()
+{
+    system("cls");
+    int matricula;
+    int index = -1;
+    int opt;
+
+    printf(" \t\tAtualizar dados \n\n");
+    printf("Digite a matrícula do aluno: \n\n");
+    scanf("%d", &matricula);
+
+    for (int i = 0; i < 30; i++)
+    {
+        if (alunos[i].matricula == matricula && alunos[i].ativo != 0)
+        {
+            index = i;
+        }
+    }
+    if (index != -1)
+    {
+        printf(" \t1. Atualizar as faltas \n");
+        printf(" \t2. Atualizar as notas \n");
+        scanf("%d", &opt);
+
+        if (opt == 1)
+        {
+            printf("Atualizar as faltas: \n");
+            int faltas;
+            scanf("%d", &faltas);
+            alunos[index].faltas = faltas;
+        }
+        else if (opt == 2)
+        {
+            printf("Atualizar as notas: \n");
+            for (int i = 0; i < 4; i++)
+            {
+                printf("Nota %d:", i + 1);
+                float nota;
+                scanf("%f", &nota);
+                alunos[index].notas[i] = nota;
+            }
+        }
+
+    } else {
+        printf("/n Aluno não encontrado");
+        system("pause");
+    }
+}
+
+void cadastrados()
+{
+    system("cls");
+    printf("\n Lista de alunos cadastrados\n");
+    for (int i = 0; i < 30; i++)
+    {
+        if (alunos[i].ativo != 0)
+        {
+            printf("\n--------------------------");
+            printf("\nMatrícula: %d\n", alunos[i].matricula);
+            printf("Turma: %d\n", alunos[i].turma);
+            printf("Nome: %s\n", alunos[i].nome);
+            printf("Faltas: %d\n", alunos[i].faltas);
+            for (int j = 0; j < 4; j++)
+            {
+                printf("Nota %d: %f \n", j, alunos[i].notas[j]);
+            }
+            printf("\n--------------------------");
+        }
+    }
+}
+
+void aprovados()
+{
+    system("cls");
+    int soma, media;
+    printf("\t\tListagem de alunos aprovados\n\n");
+    for (int i = 0; i <= 30; i++)
+    {
+        soma = alunos[i].notas[0] + alunos[i].notas[1] + alunos[i].notas[2] + alunos[i].notas[3];
+        media = soma / 4;
+        if (media >= 7 && alunos[i].faltas <= 15)
+        {
+            printf("Matrícula: %d\n", alunos[i].matricula);
+            printf("Turma: %d\n", alunos[i].turma);
+            printf("Nome: %s\n", alunos[i].nome);
+            printf("Nota final: %d\n", media);
+            printf("Faltas: %d\n\n", alunos[i].faltas);
+        }
+    }
+    system("pause");
+}
+void mreprovados()
+{
+    system("cls");
+    int soma, media;
+    printf("\t\tListagem de alunos reprovados por média\n\n");
+    for (int i = 0; i <= 30; i++)
+    {
+        soma = alunos[i].notas[0] + alunos[i].notas[1] + alunos[i].notas[2] + alunos[i].notas[3];
+        media = soma / 4;
+        if (media < 7)
+        {
+            printf("Matrícula: %d\n", alunos[i].matricula);
+            printf("Turma: %d\n", alunos[i].turma);
+            printf("Nome: %s\n", alunos[i].nome);
+            printf("Nota final: %d\n\n", media);
+        }
+    }
+    system("pause");
+}
+void freprovados()
+{
+    system("cls");
+    printf("\t\tListagem de alunos reprovados por faltas\n\n");
+    for (int i = 0; i <= 30; i++)
+    {
+        if (alunos[i].faltas > 15)
+        {
+            printf("Matrícula: %d\n", alunos[i].matricula);
+            printf("Turma: %d\n", alunos[i].turma);
+            printf("Nome: %s\n", alunos[i].nome);
+            printf("Faltas: %d\n\n", alunos[i].faltas);
+        }
+    }
+    system("pause");
+}
